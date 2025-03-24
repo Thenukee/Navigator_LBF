@@ -3,28 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Navigation Hub</title>
+    <title>Tech Hub</title>
     <style>
         :root {
             --primary-color: #3a86ff;
             --secondary-color: #8338ec;
-            --background-dark: #111827;
-            --text-dark: #e5e7eb;
-            --card-dark: #1f2937;
-            --background-light: #f9fafb;
-            --text-light: #111827;
+            --accent-color: #ff006e;
+            --background-dark: #0f172a;
+            --card-dark: #1e293b;
+            --text-dark: #e2e8f0;
+            --background-light: #f1f5f9;
             --card-light: #ffffff;
-            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --text-light: #0f172a;
+            --glass-bg-dark: rgba(30, 41, 59, 0.8);
+            --glass-bg-light: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background-color: var(--background-light);
             color: var(--text-light);
             transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
 
         body.dark-mode {
@@ -32,12 +39,55 @@
             color: var(--text-dark);
         }
 
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
             padding: 2rem;
             text-align: center;
             position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            padding-bottom: 4rem;
+            margin-bottom: -2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: white;
+            margin-bottom: 1rem;
+            min-height: 1.5em;
         }
 
         .theme-toggle {
@@ -49,52 +99,132 @@
             color: white;
             cursor: pointer;
             font-size: 1.5rem;
+            z-index: 10;
+            padding: 0.5rem;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .theme-toggle:hover {
+            transform: rotate(45deg);
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        h1 {
-            margin: 0;
-            font-size: 2.5rem;
+        .dashboard {
+            margin-top: 1rem;
+            position: relative;
         }
 
-        .subtitle {
-            margin-top: 0.5rem;
+        .search-bar {
+            backdrop-filter: blur(10px);
+            background-color: var(--glass-bg-light);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0 2rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .dark-mode .search-bar {
+            background-color: var(--glass-bg-dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: inherit;
+            outline: none;
+        }
+
+        #search-input::placeholder {
+            color: inherit;
+            opacity: 0.6;
+        }
+
+        #search-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .date-time {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .date, .time {
             font-size: 1.2rem;
-            opacity: 0.9;
+            font-weight: 600;
+            color: var(--primary-color);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            background-color: var(--glass-bg-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .dark-mode .date, .dark-mode .time {
+            background-color: var(--glass-bg-dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
 
         .category {
-            background-color: var(--card-light);
-            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            background-color: var(--glass-bg-light);
+            border-radius: 15px;
             padding: 1.5rem;
-            box-shadow: var(--shadow-light);
-            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
         .dark-mode .category {
-            background-color: var(--card-dark);
-            box-shadow: var(--shadow-dark);
+            background-color: var(--glass-bg-dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .category:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         .dark-mode .category:hover {
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
 
         .category h2 {
@@ -103,6 +233,23 @@
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category h2 i {
+            font-size: 1.25rem;
+        }
+
+        .category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
 
         .links {
@@ -114,334 +261,935 @@
         .link-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             padding: 0.75rem;
-            border-radius: 5px;
+            border-radius: 10px;
             text-decoration: none;
             color: inherit;
             background-color: rgba(0, 0, 0, 0.05);
-            transition: background-color 0.2s, transform 0.2s;
+            transition: transform 0.2s, background-color 0.2s, color 0.2s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .dark-mode .link-item {
             background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+            opacity: 0.2;
+            transition: width 0.3s ease;
         }
 
         .link-item:hover {
-            background-color: rgba(58, 134, 255, 0.1);
             transform: translateX(5px);
+            color: var(--primary-color);
+        }
+
+        .link-item:hover::before {
+            width: 100%;
         }
 
         .link-item i {
             font-size: 1.25rem;
             color: var(--primary-color);
+            transition: transform 0.3s;
         }
 
-        .comment-section {
-            margin-top: 3rem;
-            padding: 2rem;
+        .link-item:hover i {
+            transform: scale(1.2);
+        }
+
+        .feedback-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .feedback-modal {
+            position: fixed;
+            bottom: 5rem;
+            right: 2rem;
+            width: 300px;
             background-color: var(--card-light);
-            border-radius: 10px;
-            box-shadow: var(--shadow-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s, opacity 0.3s;
         }
 
-        .dark-mode .comment-section {
+        .dark-mode .feedback-modal {
             background-color: var(--card-dark);
-            box-shadow: var(--shadow-dark);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .comment-form {
+        .feedback-modal.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .feedback-modal h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feedback-form {
             display: grid;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.25rem;
         }
 
         label {
+            font-size: 0.9rem;
             font-weight: 600;
+            opacity: 0.8;
         }
 
         input, textarea {
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             font-family: inherit;
-            background-color: var(--background-light);
-            color: var(--text-light);
+            background-color: transparent;
+            color: inherit;
+            font-size: 0.9rem;
         }
 
         .dark-mode input, .dark-mode textarea {
-            background-color: #374151;
-            border-color: #4b5563;
-            color: var(--text-dark);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        button {
-            background-color: var(--primary-color);
-            color: white;
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            padding: 0.5rem;
             border: none;
             border-radius: 5px;
-            padding: 0.75rem 1.5rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 1rem;
+            font-size: 0.9rem;
         }
 
-        button:hover {
-            background-color: #2563eb;
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .cancel-btn {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: inherit;
+        }
+
+        .dark-mode .cancel-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .cancel-btn:hover {
+            opacity: 0.8;
+        }
+
+        .terminal {
+            margin-top: 2rem;
+            background-color: var(--card-dark);
+            color: #A9B7C6;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-title {
+            font-weight: bold;
+            color: #A9B7C6;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background-color: #FF5F56;
+        }
+
+        .dot-yellow {
+            background-color: #FFBD2E;
+        }
+
+        .dot-green {
+            background-color: #27C93F;
+        }
+
+        .terminal-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-prompt {
+            color: #3a86ff;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #A9B7C6;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .terminal-output {
+            margin-left: 1.5rem;
+            color: #A9B7C6;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .quick-action {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .quick-action {
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
         }
 
         footer {
-            margin-top: 3rem;
             text-align: center;
-            padding: 1.5rem;
+            padding: 2rem;
+            margin-top: 4rem;
             background-color: var(--card-light);
-            color: var(--text-light);
+            position: relative;
         }
 
         .dark-mode footer {
             background-color: var(--card-dark);
-            color: var(--text-dark);
         }
 
-        .search-bar {
-            margin: 1.5rem 0;
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .footer-content {
             display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .keyboard-shortcuts {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .shortcut {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        .key {
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            margin-right: 0.2rem;
+        }
+
+        .dark-mode .key {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-notes {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-notes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .notes-panel {
+            position: fixed;
+            bottom: 5rem;
+            left: 2rem;
+            width: 300px;
+            background-color: var(--card-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .dark-mode .notes-panel {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .notes-panel.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .notes-panel h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
             gap: 0.5rem;
+            font-size: 1.2rem;
         }
 
-        #search-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
+        #quick-note {
+            width: 100%;
+            height: 150px;
+            padding: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            font-size: 1rem;
+            background-color: transparent;
+            color: inherit;
+            font-family: inherit;
+            resize: none;
+            margin-top: 0.5rem;
         }
 
-        .dark-mode #search-input {
-            background-color: #374151;
-            border-color: #4b5563;
-            color: var(--text-dark);
+        .dark-mode #quick-note {
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* For smaller screens */
+        .notes-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .notes-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .save-note {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            color: white;
+        }
+
+        .close-notes {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: inherit;
+        }
+
+        .dark-mode .close-notes {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
         @media (max-width: 768px) {
             .category-grid {
                 grid-template-columns: 1fr;
             }
+            
             header {
                 padding: 1.5rem;
+                padding-bottom: 3rem;
             }
+            
             .container {
-                padding: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .feedback-modal, .notes-panel {
+                width: calc(100% - 4rem);
+                left: 2rem;
+                right: 2rem;
+            }
+            
+            .date-time {
+                flex-direction: column;
+            }
+            
+            .date, .time {
+                width: 100%;
+            }
+        }
+
+        /* Pulse animation for theme toggle */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(58, 134, 255, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(58, 134, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(58, 134, 255, 0);
+            }
+        }
+
+        /* Loading animation */
+        .loader {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="particles-js"></div>
+    
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+        <i class="fas fa-moon"></i>
+    </button>
+
     <header>
-        <h1>My Navigation Hub</h1>
-        <p class="subtitle">Quick access to all my favorite resources</p>
-        <button class="theme-toggle" id="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </button>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-terminal"></i>
+                <span>TechHub</span>
+            </div>
+            <div class="subtitle" id="subtitle"></div>
+        </div>
     </header>
 
     <div class="container">
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search links...">
-            <button id="search-button">Search</button>
+        <div class="dashboard">
+            <div class="date-time">
+                <div class="date" id="current-date">Loading date...</div>
+                <div class="time" id="current-time">Loading time...</div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action" id="toggle-terminal">
+                    <i class="fas fa-terminal"></i>
+                    Terminal
+                </button>
+                <button class="quick-action" id="add-link">
+                    <i class="fas fa-plus"></i>
+                    Add Link
+                </button>
+                <button class="quick-action" id="refresh-page">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+                <button class="quick-action" id="open-all">
+                    <i class="fas fa-external-link-alt"></i>
+                    Development
+                </button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search or press '/' to focus...">
+                <button id="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="terminal" id="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-title">Terminal</div>
+                    <div class="terminal-dots">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                </div>
+                <div class="terminal-content" id="terminal-content">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-grid">
+                <div class="category">
+                    <h2><i class="fas fa-code"></i> Development</h2>
+                    <div class="links">
+                        <a href="https://github.com/" class="link-item" data-name="GitHub">
+                            <i class="fab fa-github"></i>
+                            GitHub
+                        </a>
+                        <a href="https://stackoverflow.com/" class="link-item" data-name="Stack Overflow">
+                            <i class="fab fa-stack-overflow"></i>
+                            Stack Overflow
+                        </a>
+                        <a href="https://code.visualstudio.com/" class="link-item" data-name="VS Code">
+                            <i class="fas fa-code"></i>
+                            VS Code
+                        </a>
+                        <a href="https://codepen.io/" class="link-item" data-name="CodePen">
+                            <i class="fab fa-codepen"></i>
+                            CodePen
+                        </a>
+                        <a href="https://www.gitlab.com/" class="link-item" data-name="GitLab">
+                            <i class="fab fa-gitlab"></i>
+                            GitLab
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2><i class="fas fa-shield-alt"></i> Cybersecurity</h2>
+                    <div class="links">
+                        <a href="https://tryhackme.com/" class="link-item" data-name="TryHackMe">
+                            <i class="fas fa-user-secret"></i>
+                            TryHackMe
+                        </a>
+                        <a href="https://www.hackthebox.com/" class="link-item" data-name="HackTheBox">
+                            <i class="fas fa-cube"></i>
+                            HackTheBox
+                        </a>
+                        <a href="https://portswigger.net/web-security" class="link-item" data-name="PortSwigger Web Security Academy">
+                            <i class="fas fa-bug"></i>
+                            Web Security Academy
+                        </a>
+                        <a href="https://owasp.org/" class="link-item" data-name="OWASP">
+                            <i class="fas fa-lock"></i>
+                            OWASP
+                        </a>
+                        <a href="https://www.kali.org/" class="link-item" data-name="Kali Linux">
+                            <i class="fab fa-linux"></i>
+                            Kali Linux
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2><i class="fas fa-cloud"></i> Cloud Storage</h2>
+                    <div class="links">
+                        <a href="https://onedrive.live.com/" class="link-item" data-name="OneDrive">
+                            <i class="fab fa-microsoft"></i>
+                            OneDrive
+                        </a>
+                        <a href="https://drive.google.com/" class="link-item" data-name="Google Drive">
+                            <i class="fab fa-google-drive"></i>
+                            Google Drive
+                        </a>
+                        <a href="https://www.dropbox.com/" class="link-item" data-name="Dropbox">
+                            <i class="fab fa-dropbox"></i>
+                            Dropbox
+                        </a>
+                        <a href="https://mega.nz/" class="link-item" data-name="MEGA">
+                            <i class="fas fa-cloud"></i>
+                            MEGA
+                        </a>
+                        <a href="https://www.box.com/" class="link-item" data-name="Box">
+                            <i class="fas fa-box"></i>
+                            Box
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2><i class="fas fa-graduation-cap"></i> Learning</h2>
+                    <div class="links">
+                        <a href="https://www.udemy.com/" class="link-item" data-name="Udemy">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            Udemy
+                        </a>
+                        <a href="https://www.coursera.org/" class="link-item" data-name="Coursera">
+                            <i class="fas fa-university"></i>
+                            Coursera
+                        </a>
+                        <a href="https://www.freecodecamp.org/" class="link-item" data-name="freeCodeCamp">
+                            <i class="fab fa-free-code-camp"></i>
+                            freeCodeCamp
+                        </a>
+                        <a href="https://www.youtube.com/" class="link-item" data-name="YouTube">
+                            <i class="fab fa-youtube"></i>
+                            YouTube
+                        </a>
+                        <a href="https://medium.com/" class="link-item" data-name="Medium">
+                            <i class="fab fa-medium"></i>
+                            Medium
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2><i class="fas fa-tasks"></i> Productivity</h2>
+                    <div class="links">
+                        <a href="https://www.notion.so/" class="link-item" data-name="Notion">
+                            <i class="fas fa-sticky-note"></i>
+                            Notion
+                        </a>
+                        <a href="https://trello.com/" class="link-item" data-name="Trello">
+                            <i class="fab fa-trello"></i>
+                            Trello
+                        </a>
+                        <a href="https://todoist.com/" class="link-item" data-name="Todoist">
+                            <i class="fas fa-check-double"></i>
+                            Todoist
+                        </a>
+                        <a href="https://calendar.google.com/" class="link-item" data-name="Google Calendar">
+                            <i class="far fa-calendar-alt"></i>
+                            Google Calendar
+                        </a>
+                        <a href="https://www.evernote.com/" class="link-item" data-name="Evernote">
+                            <i class="fas fa-book"></i>
+                            Evernote
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <h2><i class="fas fa-film"></i> Entertainment</h2>
+                    <div class="links">
+                        <a href="https://www.netflix.com/" class="link-item" data-name="Netflix">
+                            <i class="fas fa-tv"></i>
+                            Netflix
+                        </a>
+                        <a href="https://www.spotify.com/" class="link-item" data-name="Spotify">
+                            <i class="fab fa-spotify"></i>
+                            Spotify
+                        </a>
+                        <a href="https://www.reddit.com/" class="link-item" data-name="Reddit">
+                            <i class="fab fa-reddit"></i>
+                            Reddit
+                        </a>
+                        <a href="https://www.twitch.tv/" class="link-item" data-name="Twitch">
+                            <i class="fab fa-twitch"></i>
+                            Twitch
+                        </a>
+                        <a href="https://www.imdb.com/" class="link-item" data-name="IMDB">
+                            <i class="fas fa-video"></i>
+                            IMDB
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="category-grid">
-            <div class="category">
-                <h2>Development</h2>
-                <div class="links">
-                    <a href="https://github.com/" class="link-item" data-name="GitHub">
-                        <i class="fab fa-github"></i>
-                        GitHub
-                    </a>
-                    <a href="https://stackoverflow.com/" class="link-item" data-name="Stack Overflow">
-                        <i class="fab fa-stack-overflow"></i>
-                        Stack Overflow
-                    </a>
-                    <a href="https://code.visualstudio.com/" class="link-item" data-name="VS Code">
-                        <i class="fas fa-code"></i>
-                        VS Code
-                    </a>
-                    <a href="https://codepen.io/" class="link-item" data-name="CodePen">
-                        <i class="fab fa-codepen"></i>
-                        CodePen
-                    </a>
-                    <a href="https://www.gitlab.com/" class="link-item" data-name="GitLab">
-                        <i class="fab fa-gitlab"></i>
-                        GitLab
-                    </a>
-                </div>
+    <button class="feedback-button" id="feedback-button" title="Send feedback">
+        <i class="fas fa-comment"></i>
+    </button>
+
+    <div class="feedback-modal" id="feedback-modal">
+        <h3><i class="fas fa-comment"></i> Quick Feedback</h3>
+        <form class="feedback-form" id="contact-form">
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="3" placeholder="Your thoughts?"></textarea>
             </div>
-
-            <div class="category">
-                <h2>Cybersecurity</h2>
-                <div class="links">
-                    <a href="https://tryhackme.com/" class="link-item" data-name="TryHackMe">
-                        <i class="fas fa-shield-alt"></i>
-                        TryHackMe
-                    </a>
-                    <a href="https://www.hackthebox.com/" class="link-item" data-name="HackTheBox">
-                        <i class="fas fa-cube"></i>
-                        HackTheBox
-                    </a>
-                    <a href="https://portswigger.net/web-security" class="link-item" data-name="PortSwigger Web Security Academy">
-                        <i class="fas fa-bug"></i>
-                        Web Security Academy
-                    </a>
-                    <a href="https://owasp.org/" class="link-item" data-name="OWASP">
-                        <i class="fas fa-lock"></i>
-                        OWASP
-                    </a>
-                    <a href="https://www.kali.org/" class="link-item" data-name="Kali Linux">
-                        <i class="fab fa-linux"></i>
-                        Kali Linux
-                    </a>
-                </div>
+            <div class="form-buttons">
+                <button type="button" class="cancel-btn" id="cancel-feedback">Cancel</button>
+                <button type="submit" class="submit-btn">Send</button>
             </div>
+        </form>
+    </div>
 
-            <div class="category">
-                <h2>Cloud Storage</h2>
-                <div class="links">
-                    <a href="https://onedrive.live.com/" class="link-item" data-name="OneDrive">
-                        <i class="fab fa-microsoft"></i>
-                        OneDrive
-                    </a>
-                    <a href="https://drive.google.com/" class="link-item" data-name="Google Drive">
-                        <i class="fab fa-google-drive"></i>
-                        Google Drive
-                    </a>
-                    <a href="https://www.dropbox.com/" class="link-item" data-name="Dropbox">
-                        <i class="fab fa-dropbox"></i>
-                        Dropbox
-                    </a>
-                    <a href="https://mega.nz/" class="link-item" data-name="MEGA">
-                        <i class="fas fa-cloud"></i>
-                        MEGA
-                    </a>
-                    <a href="https://www.box.com/" class="link-item" data-name="Box">
-                        <i class="fas fa-box"></i>
-                        Box
-                    </a>
-                </div>
-            </div>
+    <button class="floating-notes" id="notes-button" title="Quick notes">
+        <i class="fas fa-sticky-note"></i>
+    </button>
 
-            <div class="category">
-                <h2>Learning</h2>
-                <div class="links">
-                    <a href="https://www.udemy.com/" class="link-item" data-name="Udemy">
-                        <i class="fas fa-graduation-cap"></i>
-                        Udemy
-                    </a>
-                    <a href="https://www.coursera.org/" class="link-item" data-name="Coursera">
-                        <i class="fas fa-university"></i>
-                        Coursera
-                    </a>
-                    <a href="https://www.freecodecamp.org/" class="link-item" data-name="freeCodeCamp">
-                        <i class="fab fa-free-code-camp"></i>
-                        freeCodeCamp
-                    </a>
-                    <a href="https://www.youtube.com/" class="link-item" data-name="YouTube">
-                        <i class="fab fa-youtube"></i>
-                        YouTube
-                    </a>
-                    <a href="https://medium.com/" class="link-item" data-name="Medium">
-                        <i class="fab fa-medium"></i>
-                        Medium
-                    </a>
-                </div>
-            </div>
-
-            <div class="category">
-                <h2>Productivity</h2>
-                <div class="links">
-                    <a href="https://www.notion.so/" class="link-item" data-name="Notion">
-                        <i class="fas fa-sticky-note"></i>
-                        Notion
-                    </a>
-                    <a href="https://trello.com/" class="link-item" data-name="Trello">
-                        <i class="fab fa-trello"></i>
-                        Trello
-                    </a>
-                    <a href="https://todoist.com/" class="link-item" data-name="Todoist">
-                        <i class="fas fa-check-double"></i>
-                        Todoist
-                    </a>
-                    <a href="https://calendar.google.com/" class="link-item" data-name="Google Calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        Google Calendar
-                    </a>
-                    <a href="https://www.evernote.com/" class="link-item" data-name="Evernote">
-                        <i class="fas fa-book"></i>
-                        Evernote
-                    </a>
-                </div>
-            </div>
-
-            <div class="category">
-                <h2>Entertainment</h2>
-                <div class="links">
-                    <a href="https://www.netflix.com/" class="link-item" data-name="Netflix">
-                        <i class="fas fa-film"></i>
-                        Netflix
-                    </a>
-                    <a href="https://www.spotify.com/" class="link-item" data-name="Spotify">
-                        <i class="fab fa-spotify"></i>
-                        Spotify
-                    </a>
-                    <a href="https://www.reddit.com/" class="link-item" data-name="Reddit">
-                        <i class="fab fa-reddit"></i>
-                        Reddit
-                    </a>
-                    <a href="https://www.twitch.tv/" class="link-item" data-name="Twitch">
-                        <i class="fab fa-twitch"></i>
-                        Twitch
-                    </a>
-                    <a href="https://www.imdb.com/" class="link-item" data-name="IMDB">
-                        <i class="fas fa-video"></i>
-                        IMDB
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="comment-section">
-            <h2>Contact & Feedback</h2>
-            <form class="comment-form" id="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="4" required></textarea>
-                </div>
-                <button type="submit">Send Message</button>
-            </form>
+    <div class="notes-panel" id="notes-panel">
+        <h3><i class="fas fa-sticky-note"></i> Quick Notes</h3>
+        <textarea id="quick-note" placeholder="Jot down your thoughts..."></textarea>
+        <div class="notes-actions">
+            <button class="close-notes" id="close-notes">
+                <i class="fas fa-times"></i> Close
+            </button>
+            <button class="save-note" id="save-note">
+                <i class="fas fa-save"></i> Save
+            </button>
         </div>
     </div>
 
     <footer>
-        <p>© <span id="current-year"></span> My Navigation Hub | Created by Me</p>
+        <div class="footer-content">
+            <div class="footer-text">
+                © <span id="current-year"></span> TechHub | Personal Navigation
+            </div>
+            <div class="keyboard-shortcuts">
+                <span class="shortcut"><span class="key">/</span> Focus search</span>
+                <span class="shortcut"><span class="key">Esc</span> Clear search</span>
+                <span class="shortcut"><span class="key">T</span> Terminal</span>
+                <span class="shortcut"><span class="key">N</span> Notes</span>
+            </div>
+        </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // Initialize particles background
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {
+                            "value": 50,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": "#3a86ff"
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            },
+                        },
+                        "opacity": {
+                            "value": 0.3,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 1,
+                                "opacity_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "size": {
+                            "value": 3,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 2,
+                                "size_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#3a86ff",
+                            "opacity": 0.2,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 1,
+                            "direction": "none",
+                            "random": true,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "grab"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        },
+                        "modes": {
+                            "grab": {
+                                "distance": 140,
+                                "line_linked": {
+                                    "opacity": 0.3
+                                }
+                            },
+                            "push": {
+                                "particles_nb": 3
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+        });
+
+        // Typing animation for subtitle
+        function typeSubtitle() {
+            const subtitleElement = document.getElementById('subtitle');
+            const phrases = [
+                "Your personal tech launch pad",
+                "Quick access to all your tools",
+                "Organize your digital workflow",
+                "One hub for all your tech needs"
+            ];
+            let currentPhraseIndex = 0;
+            let currentCharIndex = 0;
+            let isDeleting = false;
+            let typingSpeed = 100;
+            let deletingSpeed = 50;
+            let pauseTime = 1500;
+
+            function type() {
+                const currentPhrase = phrases[currentPhraseIndex];
+                
+                if (isDeleting) {
+                    subtitleElement.textContent = currentPhrase.substring(0, currentCharIndex - 1);
+                    currentCharIndex--;
+                    typingSpeed = deletingSpeed;
+                } else {
+                    subtitleElement.textContent = currentPhrase.substring(0, currentCharIndex + 1);
+                    currentCharIndex++;
+                    typingSpeed = 100;
+                }
+                
+                if (!isDeleting && currentCharIndex === currentPhrase.length) {
+                    isDeleting = true;
+                    typingSpeed = pauseTime;
+                } else if (isDeleting && currentCharIndex === 0) {
+                    isDeleting = false;
+                    currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                }
+                
+                setTimeout(type, typingSpeed);
+            }
+            
+            type();
+        }
+
         // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
@@ -453,7 +1201,11 @@
             body.classList.add('dark-mode');
             icon.classList.replace('fa-moon', 'fa-sun');
         }
-
+        // Force dark mode by default
+        body.classList.add('dark-mode');
+        icon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('theme', 'dark');
+ 
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             
@@ -465,29 +1217,35 @@
                 icon.classList.replace('fa-sun', 'fa-moon');
                 localStorage.setItem('theme', 'light');
             }
+
+            // Add pulse animation
+            themeToggle.style.animation = 'pulse 1s';
+            setTimeout(() => {
+                themeToggle.style.animation = '';
+            }, 1000);
         });
+
+        // Date and time functionality
+        function updateDateTime() {
+            const dateElement = document.getElementById('current-date');
+            const timeElement = document.getElementById('current-time');
+            
+            const now = new Date();
+            
+            // Format date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = now.toLocaleDateString(undefined, options);
+            
+            // Format time
+            timeElement.textContent = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
 
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // Contact form submission
-        const contactForm = document.getElementById('contact-form');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            // Replace 'your-email@example.com' with your actual email
-            const mailtoLink = `mailto:your-email@example.com?subject=Navigation Hub Feedback from ${name}&body=${encodeURIComponent(message)}\n\nReply to: ${email}`;
-            
-            window.location.href = mailtoLink;
-            
-            // Reset form after submission
-            contactForm.reset();
-            alert('Thanks for your message! Opening your email client...');
-        });
+        // Update time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Initial update
 
         // Search functionality
         const searchInput = document.getElementById('search-input');
@@ -542,9 +1300,218 @@
             }
         });
 
-        // Add new link functionality (you can implement this as needed)
+        // Key shortcut for search
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                performSearch();
+                searchInput.blur();
+            }
+            if (e.key === 't' || e.key === 'T') {
+                const terminal = document.getElementById('terminal');
+                terminal.style.display = terminal.style.display === 'none' ? 'block' : 'none';
+                if (terminal.style.display === 'block') {
+                    document.getElementById('terminal-input').focus();
+                }
+            }
+            if (e.key === 'n' || e.key === 'N') {
+                toggleNotesPanel();
+            }
+        });
+
+        // Terminal functionality
+        const toggleTerminal = document.getElementById('toggle-terminal');
+        const terminal = document.getElementById('terminal');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalContent = document.getElementById('terminal-content');
+
+        toggleTerminal.addEventListener('click', () => {
+            terminal.style.display = terminal.style.display === 'none' ? 'block' : 'none';
+            if (terminal.style.display === 'block') {
+                terminalInput.focus();
+            }
+        });
+
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.trim();
+                
+                // Add command to terminal
+                const commandLine = document.createElement('div');
+                commandLine.className = 'terminal-line';
+                commandLine.innerHTML = `<span class="terminal-prompt">$</span> ${command}`;
+                terminalContent.appendChild(commandLine);
+                
+                // Process command
+                let output = '';
+                
+                if (command === 'help') {
+                    output = `
+                        <div class="terminal-output">Available commands:</div>
+                        <div class="terminal-output">- help: Show this help message</div>
+                        <div class="terminal-output">- clear: Clear the terminal</div>
+                        <div class="terminal-output">- date: Display current date and time</div>
+                        <div class="terminal-output">- theme: Toggle dark/light theme</div>
+                        <div class="terminal-output">- links: List all links</div>
+                        <div class="terminal-output">- open [category]: Open all links in a category</div>
+                    `;
+                } else if (command === 'clear') {
+                    terminalContent.innerHTML = '';
+                    const newLine = document.createElement('div');
+                    newLine.className = 'terminal-line';
+                    newLine.innerHTML = '<span class="terminal-prompt">$</span> <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command...">';
+                    terminalContent.appendChild(newLine);
+                    document.getElementById('terminal-input').addEventListener('keydown', terminalInput.onkeydown);
+                    document.getElementById('terminal-input').focus();
+                    return;
+                } else if (command === 'date') {
+                    const now = new Date();
+                    output = `<div class="terminal-output">${now.toString()}</div>`;
+                } else if (command === 'theme') {
+                    themeToggle.click();
+                    output = `<div class="terminal-output">Theme toggled.</div>`;
+                } else if (command === 'links') {
+                    output = `<div class="terminal-output">Available categories:</div>`;
+                    document.querySelectorAll('.category h2').forEach(cat => {
+                        output += `<div class="terminal-output">- ${cat.textContent.trim()}</div>`;
+                    });
+                } else if (command.startsWith('open ')) {
+                    const category = command.substring(5).toLowerCase();
+                    let found = false;
+                    
+                    document.querySelectorAll('.category h2').forEach(cat => {
+                        if (cat.textContent.trim().toLowerCase().includes(category)) {
+                            found = true;
+                            output = `<div class="terminal-output">Opening links in ${cat.textContent.trim()}</div>`;
+                            
+                            const links = cat.closest('.category').querySelectorAll('.link-item');
+                            links.forEach(link => {
+                                window.open(link.href, '_blank');
+                            });
+                        }
+                    });
+                    
+                    if (!found) {
+                        output = `<div class="terminal-output">Category "${category}" not found.</div>`;
+                    }
+                } else {
+                    output = `<div class="terminal-output">Command not found: ${command}. Type 'help' for available commands.</div>`;
+                }
+                
+                terminalContent.innerHTML += output;
+                
+                // Reset input
+                terminalInput.value = '';
+                
+                // Keep scroll at bottom
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+                
+                // Re-focus input
+                const newLine = document.createElement('div');
+                newLine.className = 'terminal-line';
+                newLine.innerHTML = '<span class="terminal-prompt">$</span> <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command...">';
+                terminalContent.appendChild(newLine);
+                document.getElementById('terminal-input').addEventListener('keydown', terminalInput.onkeydown);
+                document.getElementById('terminal-input').focus();
+            }
+        });
+
+        // Feedback form functionality
+        const feedbackButton = document.getElementById('feedback-button');
+        const feedbackModal = document.getElementById('feedback-modal');
+        const cancelFeedback = document.getElementById('cancel-feedback');
+        const contactForm = document.getElementById('contact-form');
+
+        feedbackButton.addEventListener('click', () => {
+            feedbackModal.classList.toggle('active');
+            document.getElementById('message').focus();
+        });
+
+        cancelFeedback.addEventListener('click', () => {
+            feedbackModal.classList.remove('active');
+        });
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const message = document.getElementById('message').value;
+            
+            // Replace 'your-email@example.com' with your actual email
+            const mailtoLink = `mailto:your-email@example.com?subject=Website Feedback&body=${encodeURIComponent(message)}`;
+            
+            window.location.href = mailtoLink;
+            
+            // Reset form and close modal
+            contactForm.reset();
+            feedbackModal.classList.remove('active');
+        });
+
+        // Notes functionality
+        const notesButton = document.getElementById('notes-button');
+        const notesPanel = document.getElementById('notes-panel');
+        const closeNotes = document.getElementById('close-notes');
+        const saveNote = document.getElementById('save-note');
+        const quickNote = document.getElementById('quick-note');
+
+        function toggleNotesPanel() {
+            notesPanel.classList.toggle('active');
+            if (notesPanel.classList.contains('active')) {
+                quickNote.focus();
+                // Load saved note
+                const savedNote = localStorage.getItem('quickNote');
+                if (savedNote) {
+                    quickNote.value = savedNote;
+                }
+            }
+        }
+
+        notesButton.addEventListener('click', toggleNotesPanel);
+
+        closeNotes.addEventListener('click', () => {
+            notesPanel.classList.remove('active');
+        });
+
+        saveNote.addEventListener('click', () => {
+            localStorage.setItem('quickNote', quickNote.value);
+            notesPanel.classList.remove('active');
+        });
+
+        // Quick actions functionality
+        document.getElementById('refresh-page').addEventListener('click', () => {
+            location.reload();
+        });
+
+        document.getElementById('open-all').addEventListener('click', () => {
+            const devLinks = document.querySelector('.category:nth-child(1)').querySelectorAll('.link-item');
+            devLinks.forEach(link => {
+                window.open(link.href, '_blank');
+            });
+        });
+
+        document.getElementById('add-link').addEventListener('click', () => {
+            const name = prompt('Enter link name:');
+            if (!name) return;
+            
+            const url = prompt('Enter URL:', 'https://');
+            if (!url) return;
+            
+            const category = prompt('Enter category (1-6):', '1');
+            if (!category) return;
+            
+            const icon = prompt('Enter icon class (e.g., fas fa-link):', 'fas fa-link');
+            
+            addNewLink(parseInt(category), name, url, icon);
+        });
+
+        // Add new link functionality
         function addNewLink(category, name, url, icon) {
             const categoryEl = document.querySelector(`.category:nth-child(${category})`);
+            if (!categoryEl) return;
+            
             const linksContainer = categoryEl.querySelector('.links');
             
             const linkItem = document.createElement('a');
@@ -561,7 +1528,16 @@
             linksContainer.appendChild(linkItem);
         }
 
-        // Example: addNewLink(1, 'New Link', 'https://example.com', 'fas fa-link');
+        // Start typing animation
+        typeSubtitle();
+
+        // Load saved note on page load
+        window.addEventListener('load', () => {
+            const savedNote = localStorage.getItem('quickNote');
+            if (savedNote) {
+                quickNote.value = savedNote;
+            }
+        });
     </script>
 </body>
 </html>
