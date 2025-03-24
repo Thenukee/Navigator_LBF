@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Navigation Hub</title>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --background-dark: #111827;
+            --text-dark: #e5e7eb;
+            --card-dark: #1f2937;
+            --background-light: #f9fafb;
+            --text-light: #111827;
+            --card-light: #ffffff;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .category {
+            background-color: var(--card-light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+
+        .dark-mode .category {
+            background-color: var(--card-dark);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .category:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .category h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+            text-decoration: none;
+            color: inherit;
+            background-color: rgba(0, 0, 0, 0.05);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .dark-mode .link-item {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .link-item:hover {
+            background-color: rgba(58, 134, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .link-item i {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .comment-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: var(--card-light);
+            border-radius: 10px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .dark-mode .comment-section {
+            background-color: var(--card-dark);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .comment-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        input, textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-family: inherit;
+            background-color: var(--background-light);
+            color: var(--text-light);
+        }
+
+        .dark-mode input, .dark-mode textarea {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: var(--text-dark);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--card-light);
+            color: var(--text-light);
+        }
+
+        .dark-mode footer {
+            background-color: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .dark-mode #search-input {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: var(--text-dark);
+        }
+
+        /* For smaller screens */
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 1.5rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>My Navigation Hub</h1>
+        <p class="subtitle">Quick access to all my favorite resources</p>
+        <button class="theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search links...">
+            <button id="search-button">Search</button>
+        </div>
+
+        <div class="category-grid">
+            <div class="category">
+                <h2>Development</h2>
+                <div class="links">
+                    <a href="https://github.com/" class="link-item" data-name="GitHub">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="https://stackoverflow.com/" class="link-item" data-name="Stack Overflow">
+                        <i class="fab fa-stack-overflow"></i>
+                        Stack Overflow
+                    </a>
+                    <a href="https://code.visualstudio.com/" class="link-item" data-name="VS Code">
+                        <i class="fas fa-code"></i>
+                        VS Code
+                    </a>
+                    <a href="https://codepen.io/" class="link-item" data-name="CodePen">
+                        <i class="fab fa-codepen"></i>
+                        CodePen
+                    </a>
+                    <a href="https://www.gitlab.com/" class="link-item" data-name="GitLab">
+                        <i class="fab fa-gitlab"></i>
+                        GitLab
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>Cybersecurity</h2>
+                <div class="links">
+                    <a href="https://tryhackme.com/" class="link-item" data-name="TryHackMe">
+                        <i class="fas fa-shield-alt"></i>
+                        TryHackMe
+                    </a>
+                    <a href="https://www.hackthebox.com/" class="link-item" data-name="HackTheBox">
+                        <i class="fas fa-cube"></i>
+                        HackTheBox
+                    </a>
+                    <a href="https://portswigger.net/web-security" class="link-item" data-name="PortSwigger Web Security Academy">
+                        <i class="fas fa-bug"></i>
+                        Web Security Academy
+                    </a>
+                    <a href="https://owasp.org/" class="link-item" data-name="OWASP">
+                        <i class="fas fa-lock"></i>
+                        OWASP
+                    </a>
+                    <a href="https://www.kali.org/" class="link-item" data-name="Kali Linux">
+                        <i class="fab fa-linux"></i>
+                        Kali Linux
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>Cloud Storage</h2>
+                <div class="links">
+                    <a href="https://onedrive.live.com/" class="link-item" data-name="OneDrive">
+                        <i class="fab fa-microsoft"></i>
+                        OneDrive
+                    </a>
+                    <a href="https://drive.google.com/" class="link-item" data-name="Google Drive">
+                        <i class="fab fa-google-drive"></i>
+                        Google Drive
+                    </a>
+                    <a href="https://www.dropbox.com/" class="link-item" data-name="Dropbox">
+                        <i class="fab fa-dropbox"></i>
+                        Dropbox
+                    </a>
+                    <a href="https://mega.nz/" class="link-item" data-name="MEGA">
+                        <i class="fas fa-cloud"></i>
+                        MEGA
+                    </a>
+                    <a href="https://www.box.com/" class="link-item" data-name="Box">
+                        <i class="fas fa-box"></i>
+                        Box
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>Learning</h2>
+                <div class="links">
+                    <a href="https://www.udemy.com/" class="link-item" data-name="Udemy">
+                        <i class="fas fa-graduation-cap"></i>
+                        Udemy
+                    </a>
+                    <a href="https://www.coursera.org/" class="link-item" data-name="Coursera">
+                        <i class="fas fa-university"></i>
+                        Coursera
+                    </a>
+                    <a href="https://www.freecodecamp.org/" class="link-item" data-name="freeCodeCamp">
+                        <i class="fab fa-free-code-camp"></i>
+                        freeCodeCamp
+                    </a>
+                    <a href="https://www.youtube.com/" class="link-item" data-name="YouTube">
+                        <i class="fab fa-youtube"></i>
+                        YouTube
+                    </a>
+                    <a href="https://medium.com/" class="link-item" data-name="Medium">
+                        <i class="fab fa-medium"></i>
+                        Medium
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>Productivity</h2>
+                <div class="links">
+                    <a href="https://www.notion.so/" class="link-item" data-name="Notion">
+                        <i class="fas fa-sticky-note"></i>
+                        Notion
+                    </a>
+                    <a href="https://trello.com/" class="link-item" data-name="Trello">
+                        <i class="fab fa-trello"></i>
+                        Trello
+                    </a>
+                    <a href="https://todoist.com/" class="link-item" data-name="Todoist">
+                        <i class="fas fa-check-double"></i>
+                        Todoist
+                    </a>
+                    <a href="https://calendar.google.com/" class="link-item" data-name="Google Calendar">
+                        <i class="far fa-calendar-alt"></i>
+                        Google Calendar
+                    </a>
+                    <a href="https://www.evernote.com/" class="link-item" data-name="Evernote">
+                        <i class="fas fa-book"></i>
+                        Evernote
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h2>Entertainment</h2>
+                <div class="links">
+                    <a href="https://www.netflix.com/" class="link-item" data-name="Netflix">
+                        <i class="fas fa-film"></i>
+                        Netflix
+                    </a>
+                    <a href="https://www.spotify.com/" class="link-item" data-name="Spotify">
+                        <i class="fab fa-spotify"></i>
+                        Spotify
+                    </a>
+                    <a href="https://www.reddit.com/" class="link-item" data-name="Reddit">
+                        <i class="fab fa-reddit"></i>
+                        Reddit
+                    </a>
+                    <a href="https://www.twitch.tv/" class="link-item" data-name="Twitch">
+                        <i class="fab fa-twitch"></i>
+                        Twitch
+                    </a>
+                    <a href="https://www.imdb.com/" class="link-item" data-name="IMDB">
+                        <i class="fas fa-video"></i>
+                        IMDB
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="comment-section">
+            <h2>Contact & Feedback</h2>
+            <form class="comment-form" id="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© <span id="current-year"></span> My Navigation Hub | Created by Me</p>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            // Toggle icon
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Replace 'your-email@example.com' with your actual email
+            const mailtoLink = `mailto:your-email@example.com?subject=Navigation Hub Feedback from ${name}&body=${encodeURIComponent(message)}\n\nReply to: ${email}`;
+            
+            window.location.href = mailtoLink;
+            
+            // Reset form after submission
+            contactForm.reset();
+            alert('Thanks for your message! Opening your email client...');
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const linkItems = document.querySelectorAll('.link-item');
+
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            linkItems.forEach(link => {
+                const linkName = link.getAttribute('data-name').toLowerCase();
+                const linkText = link.textContent.trim().toLowerCase();
+                const linkParent = link.closest('.category');
+                
+                if (linkName.includes(searchTerm) || linkText.includes(searchTerm)) {
+                    link.style.display = 'flex';
+                    linkParent.style.display = 'block';
+                } else {
+                    link.style.display = 'none';
+                }
+            });
+            
+            // Hide empty categories
+            document.querySelectorAll('.category').forEach(category => {
+                const visibleLinks = category.querySelectorAll('.link-item[style="display: flex"]').length;
+                if (visibleLinks === 0 && searchTerm !== '') {
+                    category.style.display = 'none';
+                } else {
+                    category.style.display = 'block';
+                }
+            });
+            
+            // Show all links if search is cleared
+            if (searchTerm === '') {
+                linkItems.forEach(link => {
+                    link.style.display = 'flex';
+                });
+                document.querySelectorAll('.category').forEach(category => {
+                    category.style.display = 'block';
+                });
+            }
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+            // If backspace is pressed and the input is empty, show all links
+            if (e.key === 'Backspace' && searchInput.value === '') {
+                performSearch();
+            }
+        });
+
+        // Add new link functionality (you can implement this as needed)
+        function addNewLink(category, name, url, icon) {
+            const categoryEl = document.querySelector(`.category:nth-child(${category})`);
+            const linksContainer = categoryEl.querySelector('.links');
+            
+            const linkItem = document.createElement('a');
+            linkItem.href = url;
+            linkItem.className = 'link-item';
+            linkItem.setAttribute('data-name', name);
+            
+            const iconEl = document.createElement('i');
+            iconEl.className = icon;
+            
+            linkItem.appendChild(iconEl);
+            linkItem.appendChild(document.createTextNode(' ' + name));
+            
+            linksContainer.appendChild(linkItem);
+        }
+
+        // Example: addNewLink(1, 'New Link', 'https://example.com', 'fas fa-link');
+    </script>
+</body>
+</html>
