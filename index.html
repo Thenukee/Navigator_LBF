@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Hub</title>
+    <title>LBF Navigation</title>
     <style>
         :root {
             --primary-color: #3a86ff;
@@ -791,7 +791,7 @@
         <div class="header-content">
             <div class="logo">
                 <i class="fas fa-terminal"></i>
-                <span>TechHub</span>
+                <span>QuickNavigation</span>
             </div>
             <div class="subtitle" id="subtitle"></div>
         </div>
@@ -1048,10 +1048,10 @@
                 © <span id="current-year"></span> TechHub | Personal Navigation
             </div>
             <div class="keyboard-shortcuts">
-                <span class="shortcut"><span class="key">/</span> Focus search</span>
+                <span class="shortcut"><span class="key">Alt + /</span> Focus search</span>
                 <span class="shortcut"><span class="key">Esc</span> Clear search</span>
-                <span class="shortcut"><span class="key">T</span> Terminal</span>
-                <span class="shortcut"><span class="key">N</span> Notes</span>
+                <span class="shortcut"><span class="key">Alt + T</span> Terminal</span>
+                <span class="shortcut"><span class="key">Alt + N</span> Notes</span>
             </div>
         </div>
     </footer>
@@ -1302,26 +1302,31 @@
 
         // Key shortcut for search
         document.addEventListener('keydown', function(e) {
-            if (e.key === '/' && document.activeElement !== searchInput) {
-                e.preventDefault();
-                searchInput.focus();
-            }
-            if (e.key === 'Escape') {
-                searchInput.value = '';
-                performSearch();
-                searchInput.blur();
-            }
-            if (e.key === 't' || e.key === 'T') {
-                const terminal = document.getElementById('terminal');
-                terminal.style.display = terminal.style.display === 'none' ? 'block' : 'none';
-                if (terminal.style.display === 'block') {
-                    document.getElementById('terminal-input').focus();
-                }
-            }
-            if (e.key === 'n' || e.key === 'N') {
-                toggleNotesPanel();
-            }
-        });
+    // Focus search input when Alt + '/' is pressed
+    if (e.key === '/' && e.altKey && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+    }
+    // Clear search input on Escape
+    if (e.key === 'Escape') {
+        searchInput.value = '';
+        performSearch();
+        searchInput.blur();
+    }
+    // Toggle terminal panel when Alt + t is pressed
+    if ((e.key === 't' || e.key === 'T') && e.altKey) {
+        const terminal = document.getElementById('terminal');
+        terminal.style.display = terminal.style.display === 'none' ? 'block' : 'none';
+        if (terminal.style.display === 'block') {
+            document.getElementById('terminal-input').focus();
+        }
+    }
+    // Toggle notes panel when Alt + n is pressed
+    if ((e.key === 'n' || e.key === 'N') && e.altKey) {
+        toggleNotesPanel();
+    }
+});
+
 
         // Terminal functionality
         const toggleTerminal = document.getElementById('toggle-terminal');
@@ -1538,6 +1543,83 @@
                 quickNote.value = savedNote;
             }
         });
+
+        
+// Create a standalone handler for commands
+function handleTerminalCommand(e) {
+    if (e.key !== 'Enter') return;
+
+    const command = e.target.value.trim();
+    const terminalContent = document.getElementById('terminal-content');
+
+    // Echo the command
+    const commandLine = document.createElement('div');
+    commandLine.className = 'terminal-line';
+    commandLine.innerHTML = `<span class="terminal-prompt">$</span> ${command}`;
+    terminalContent.appendChild(commandLine);
+
+    // Process the command
+    let output = '';
+    if (command === 'help') {
+        output = `<div class="terminal-output">Available commands: help, clear, date, theme, links, open [category]</div>`;
+    } else if (command === 'clear') {
+        terminalContent.innerHTML = '';
+    } else if (command === 'date') {
+        output = `<div class="terminal-output">${new Date().toString()}</div>`;
+    } else if (command === 'theme') {
+        themeToggle.click();
+        output = `<div class="terminal-output">Theme toggled.</div>`;
+    } else if (command === 'links') {
+        output = `<div class="terminal-output">Available categories:</div>`;
+        document.querySelectorAll('.category h2').forEach(cat => {
+            output += `<div class="terminal-output">- ${cat.textContent.trim()}</div>`;
+        });
+    } else if (command.startsWith('open ')) {
+        const category = command.substring(5).toLowerCase();
+        let found = false;
+        document.querySelectorAll('.category h2').forEach(cat => {
+            if (cat.textContent.trim().toLowerCase().includes(category)) {
+                found = true;
+                output = `<div class="terminal-output">Opening links in ${cat.textContent.trim()}</div>`;
+                const links = cat.closest('.category').querySelectorAll('.link-item');
+                links.forEach(link => {
+                    window.open(link.href, '_blank');
+                });
+            }
+        });
+        if (!found) {
+            output = `<div class="terminal-output">Category "${category}" not found.</div>`;
+        }
+    } else {
+        output = `<div class="terminal-output">Command not found: ${command}. Type 'help' for a list of commands.</div>`;
+    }
+
+    if (output) {
+        terminalContent.innerHTML += output;
+    }
+
+    // Clear and replace input
+    e.target.value = '';
+    e.target.blur();
+    terminalContent.scrollTop = terminalContent.scrollHeight;
+
+    const newLine = document.createElement('div');
+    newLine.className = 'terminal-line';
+    newLine.innerHTML = `<span class="terminal-prompt">$</span> <input type="text" class="terminal-input" placeholder="Type a command...">`;
+    terminalContent.appendChild(newLine);
+
+    const newInput = newLine.querySelector('.terminal-input');
+    newInput.addEventListener('keydown', handleTerminalCommand);
+    newInput.focus();
+}
+
+
+// Attach the handler to your initial terminal input once
+terminalInput.addEventListener('keydown', handleTerminalCommand);
+
+    
+
+
     </script>
 </body>
 </html>
